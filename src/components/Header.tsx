@@ -1,4 +1,4 @@
-import { Flex, Input, Text, Icon, HStack } from "@chakra-ui/react";
+import { Flex, Input, Text, Icon, HStack, Box, Avatar } from "@chakra-ui/react";
 import {
   RiSearchLine,
   RiNotificationLine,
@@ -61,7 +61,19 @@ export function Header() {
           <Icon as={RiUserAddLine} fontSize="20" />
         </HStack>
 
-        <Flex></Flex>
+        <Flex align="center">
+          <Box mr="4" textAlign="right">
+            <Text>Gleyson Rodrigues</Text>
+            <Text color="gray.300" fontSize="small">
+              rorigues.gw@gmail.com
+            </Text>
+          </Box>
+          <Avatar
+            size="md"
+            name="Gleydson Rodrigues"
+            src="https://github.com/gw-rodrigues.png"
+          />
+        </Flex>
       </Flex>
     </Flex>
   );
