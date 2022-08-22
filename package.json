@@ -25,6 +25,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.4.0",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.14",
     "eslint": "8.18.0",
