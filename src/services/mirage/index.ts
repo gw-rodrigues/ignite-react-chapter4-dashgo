@@ -1,4 +1,5 @@
-import { createServer, Factory, Model } from "miragejs";
+import { createServer, Factory, Model } from "miragejs"; //server api
+import { faker } from "@faker-js/faker"; //geração dados fictícios
 
 type User = {
   name: string;
@@ -14,17 +15,24 @@ export function makeServer() {
 
     factories: {
       //forma gerar dados em massa, 200, 1000, etc
+      //nome modulo
       user: Factory.extend({
         name(i: number) {
           return `User ${i + 1}`;
         },
-        email() {},
-        createdAt() {}, //mesmo estando em camelCase ele compreende que e o created_at
+        email() {
+          return faker.internet.email().toLowerCase();
+        },
+        //mesmo estando em camelCase ele compreende que e o created_at
+        createdAt() {
+          return faker.date.recent(10);
+        },
       }), //nome modulo
     },
 
     seeds(server) {
       //criar usuários ou dados assim mirage for iniciado
+      server.createList("user", 200); //criar uma lista do modele user, de 200 usuários
     },
 
     routes() {
