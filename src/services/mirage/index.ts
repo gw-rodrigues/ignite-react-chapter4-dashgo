@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker"; //geração dados fictícios
 type User = {
   name: string;
   email: string;
-  created_at: string;
+  createdAt: string;
 };
 
 export function makeServer() {
@@ -32,7 +32,7 @@ export function makeServer() {
 
     seeds(server) {
       //criar usuários ou dados assim mirage for iniciado
-      server.createList("user", 200); //criar uma lista do modele user, de 200 usuários
+      server.createList("user", 10); //criar uma lista do modele user, de 200 usuários
     },
 
     routes() {
