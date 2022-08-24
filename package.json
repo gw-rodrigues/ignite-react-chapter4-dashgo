@@ -14,7 +14,6 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@hookform/resolvers": "^2.9.3",
-    "@tanstack/react-query-devtools": "^4.2.1",
     "apexcharts": "^3.35.3",
     "framer-motion": "^6.3.11",
     "next": "12.1.6",
