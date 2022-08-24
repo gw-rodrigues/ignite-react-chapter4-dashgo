@@ -29,7 +29,17 @@ export default function UserList() {
   const { data, isLoading, error } = useQuery("users", async () => {
     const res = await fetch("http://localhost:3000/api/users");
     const data = await res.json();
-    return data;
+    const users = data.users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+    }));
+    return users;
   });
 
   const isWiderVersion = useBreakpointValue({
@@ -83,87 +93,39 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td px={["4", "4", "6"]}>
-                      <Checkbox colorScheme="pink" />
-                    </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight="bold">Gleydson Rodrigues</Text>
-                        <Text fontSize="sm" color="gray.300">
-                          Gleydson Rodrigues
-                        </Text>
-                      </Box>
-                    </Td>
-                    {isWiderVersion && <Td>20 de Junho, 2022</Td>}
-                    {isWiderVersion && (
-                      <Td>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="purple"
-                          leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                        >
-                          Editar
-                        </Button>
-                      </Td>
-                    )}
-                  </Tr>
-                  <Tr>
-                    <Td px={["4", "4", "6"]}>
-                      <Checkbox colorScheme="pink" />
-                    </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight="bold">Gleydson Rodrigues</Text>
-                        <Text fontSize="sm" color="gray.300">
-                          Gleydson Rodrigues
-                        </Text>
-                      </Box>
-                    </Td>
-                    {isWiderVersion && <Td>20 de Junho, 2022</Td>}
-                    {isWiderVersion && (
-                      <Td>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="purple"
-                          leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                        >
-                          Editar
-                        </Button>
-                      </Td>
-                    )}
-                  </Tr>
-                  <Tr>
-                    <Td px={["4", "4", "6"]}>
-                      <Checkbox colorScheme="pink" />
-                    </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight="bold">Gleydson Rodrigues</Text>
-                        <Text fontSize="sm" color="gray.300">
-                          Gleydson Rodrigues
-                        </Text>
-                      </Box>
-                    </Td>
-                    {isWiderVersion && <Td>20 de Junho, 2022</Td>}
-                    {isWiderVersion && (
-                      <Td>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="purple"
-                          leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                        >
-                          Editar
-                        </Button>
-                      </Td>
-                    )}
-                  </Tr>
+                  {data.map((user) => {
+                    return (
+                      <Tr key={user.id}>
+                        <Td px={["4", "4", "6"]}>
+                          <Checkbox colorScheme="pink" />
+                        </Td>
+                        <Td>
+                          <Box>
+                            <Text fontWeight="bold">{user.name}</Text>
+                            <Text fontSize="sm" color="gray.300">
+                              {user.email}
+                            </Text>
+                          </Box>
+                        </Td>
+                        {isWiderVersion && <Td>{user.createdAt}</Td>}
+                        {isWiderVersion && (
+                          <Td>
+                            <Button
+                              as="a"
+                              size="sm"
+                              fontSize="sm"
+                              colorScheme="purple"
+                              leftIcon={
+                                <Icon as={RiPencilLine} fontSize="16" />
+                              }
+                            >
+                              Editar
+                            </Button>
+                          </Td>
+                        )}
+                      </Tr>
+                    );
+                  })}
                 </Tbody>
               </Table>
               <Pagination />
