@@ -4,6 +4,7 @@ import { theme } from "../styles/theme";
 import { SidebarDrawerProvider } from "../Contexts/SiderbarDrawerContext";
 import { makeServer } from "../services/mirage";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 if (process.env.NODE_ENV === "development") {
   makeServer();
