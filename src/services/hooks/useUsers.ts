@@ -2,7 +2,7 @@ import { useQuery } from "react-query"; //requisições para back-end
 import { api } from "../api";
 
 type User = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   createdAt: string;
