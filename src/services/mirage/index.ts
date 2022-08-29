@@ -58,6 +58,7 @@ export function makeServer() {
           { users }
         ); //retornamos 200 success, nome padrão usado comunidade 'x-total-count' com total users, e os registros users - listagem
       });
+      this.get("/users/:id");
       this.post("/users");
 
       this.namespace = ""; //para nao dar conflito com rotas api do Next, do src/api
