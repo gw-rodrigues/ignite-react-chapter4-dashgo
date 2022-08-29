@@ -40,6 +40,6 @@ export function useUsers(page: number) {
   //return useQuery<User[]>... assim*, ou na função porque o useQuery usa automaticamente a tipagem retornada das funções chamadas
   //recebe a pagina e envia a função* e executa com o valor page
   return useQuery(["users", page], () => getUsers(page), {
-    staleTime: 1000 * 5, //5 segundos, que o react-query nao ira re-validar as informações, nem atualizar a página
+    staleTime: 1000 * 60 * 10, //10min, que o react-query nao ira re-validar as informações, nem atualizar a página
   });
 }
