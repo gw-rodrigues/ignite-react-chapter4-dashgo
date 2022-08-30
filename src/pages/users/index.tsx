@@ -16,6 +16,7 @@ import {
   Spinner,
   Link,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import { useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
@@ -23,15 +24,17 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import { api } from "../../services/api";
-import { useUsers } from "../../services/hooks/useUsers";
+import { useUsers, getUsers } from "../../services/hooks/useUsers";
 import { queryClient } from "../../services/queryClient";
 
-export default function UserList() {
+export default function UserList({ users }) {
   const [page, setPage] = useState(1);
   //os dados do react-query vao ficar armazenados dentro cache na nossa aplicação
   //assim se precisar dos dados num intervalo de tempo nao precisa pedir ao backend
   //criando user query com nome da cache "users"
-  const { data, isLoading, isFetching, error } = useUsers(page); //envia pagina atual para hooks useUsers
+  const { data, isLoading, isFetching, error } = useUsers(page, {
+    initialData: users,
+  }); //envia pagina atual para hooks useUsers
 
   const isWiderVersion = useBreakpointValue({
     base: false,
@@ -92,7 +95,7 @@ export default function UserList() {
                     <Th px={["4", "4", "6"]} color="gray.300" width="8">
                       <Checkbox colorScheme="pink" />
                     </Th>
-                    <Th>Usários</Th>
+                    <Th>Usuários</Th>
                     {isWiderVersion && <Th>Data de cadastro</Th>}
                     {isWiderVersion && <Th width="8"></Th>}
                   </Tr>
@@ -150,3 +153,8 @@ export default function UserList() {
     </Box>
   );
 }
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { users, totalCount } = await getUsers(1);
+//   return { props: { users } };
+// };
