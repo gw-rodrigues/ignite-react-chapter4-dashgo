@@ -1,14 +1,21 @@
-import { createServer, Factory, Model, Response } from "miragejs"; //server api
+import {
+  createServer,
+  Factory,
+  Model,
+  Response,
+  ActiveModelSerializer,
+} from "miragejs"; //server api
 import { faker } from "@faker-js/faker"; //geração dados fictícios
 
 type User = {
   name: string;
   email: string;
-  createdAt: string;
+  created_at: string; //Mirage faz a conversão para CamelCase (createdAt) - junto com serializer, usado quando faz requisição HTTP
 };
 
 export function makeServer() {
   const server = createServer({
+    serializers: { application: ActiveModelSerializer }, //Enviar e receber os dados com relacionamento em uma única chamada HTTP - ActiveModelSerializer (APIRest padrão)
     models: {
       user: Model.extend<Partial<User>>({}), //modelo da base dados mirage
     },
@@ -46,10 +53,9 @@ export function makeServer() {
         const pageStart = (Number(page) - 1) * Number(per_page); //ex.: page: 3 - 1 = 2 * 10 = 20 - inicia item 20
         const pageEnd = pageStart + Number(per_page);
 
-        const users = this.serialize(schema.all("user")).users.slice(
-          pageStart,
-          pageEnd
-        ); //retorna objeto com array uses ex.: { ..., user:[user1,user2,...],...} / usar serialize para usar o nosso model acima, se da error.
+        const users = this.serialize(schema.all("user"))
+          .users.sort((a, b) => a.createdAt - b.createdAt)
+          .slice(pageStart, pageEnd); //retorna objeto com array uses ex.: { ..., user:[user1,user2,...],...} / usar serialize para usar o nosso model acima, se da error.
 
         //como nosso requisição nao faz parte da estrutura, precisamos enviar como headers
         return new Response(
