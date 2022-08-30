@@ -14,9 +14,13 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import Link from "next/link";
+import { useMutation } from "react-query";
 import { Input } from "../../components/Form/Input";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
+import { useRouter } from "next/router";
 
 type CreateUserFormData = {
   name: string;
@@ -38,6 +42,24 @@ const CreateUserFormSchema = yup.object().shape({
 });
 
 export default function UserCreate() {
+  const router = useRouter();
+
+  //no useMutaion conseguimos obter através { isLoading, error, isSuccess, ... } da requisição
+  const createUser = useMutation(
+    async (user: CreateUserFormData) => {
+      const response = await api.post("users", {
+        user: { ...user, created_at: new Date() },
+      });
+      return response.data.user;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("users"); //usamos so 'users' wildcard para invalidar todas caches criadas, para deletar apenas uma paginas/user usamos ['users',1 (numero pagiana/user)]
+      }, //quando cadastro der sucesso, queremos invalidar o cache criado na listagem de usuários - existe também onSettled (pega sucesso e/ou erro)
+      //queryClient.setQueryData(['user',{id:idUser}],data) //podemos alterar diretamente uma página e/ou user user específico
+    }
+  );
+
   const {
     register,
     handleSubmit,
@@ -49,8 +71,8 @@ export default function UserCreate() {
   const handleCreateUser: SubmitHandler<CreateUserFormData> = async (
     values
   ) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(values);
+    await createUser.mutateAsync(values); //executa a função forma async / promise - envia os parâmetros do usuário
+    router.push("/users"); //redireciona o usuário de volta listagem users
   };
 
   return (
